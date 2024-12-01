@@ -78,22 +78,15 @@ readInput()
 int
 main()
 {
-  // Loading and Sorting
-  clock_t start = clock();
+  // Part 1
 
+  clock_t start1 = clock();
   InputData input = readInput();
   
   qsort(input.inputs[0], input.length, sizeof(int), comp); 
   qsort(input.inputs[1], input.length, sizeof(int), comp);
   
-  clock_t end = clock();
-  double time_spent = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
-  printf("Loading and Sorting: %fms\n", time_spent);
-
-
-  // Part 1
   int sum = 0;
-  clock_t start1 = clock();
   for (int i = 0; i < input.length; i++)
   {
     // printf("val1: %i, val2: %i\n", input.inputs[0][i], input.inputs[1][i]);
@@ -107,39 +100,29 @@ main()
 
   // Part 2
   clock_t start2 = clock();
+
+  InputData input2 = readInput();
   int sum2 = 0;
-  int prevNum = 0;
-  int prevCount = 0;
+
   for (int i = 0; i < input.length; i++)
   {
     int number1 = input.inputs[0][i];
-    if (number1 == prevNum)
+    int counter = 0;
+    for (int j = 0; j < input.length; j++)
     {
-      sum2 += prevNum * prevCount;
-    }
-    else
-    {
-      int counter = 0;
-      for (int j = 0; j < input.length; j++)
+      int number2 = input.inputs[1][j];
+      if (number1 == number2)
       {
-        int number2 = input.inputs[1][j];
-        if (number1 == number2)
-        {
-          counter++;
-        }
+        counter++;
       }
-      sum2 += number1 * counter;
-      prevNum = number1;
-      prevCount = counter;
     }
+    sum2 += number1 * counter;
   }
 
   clock_t end2 = clock();
   double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
 
   printf("Part 2: %i, Time: %fms\n", sum2, time_spent2);
-
-
 
 
   free(input.inputs[0]);
