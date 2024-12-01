@@ -89,8 +89,8 @@ main()
   qsort(input.inputs[1], input.length, sizeof(int), comp);
   
   clock_t end = clock();
-  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-  printf("Loading and Sorting: %f\n", time_spent);
+  double time_spent = (double)(end - start) * 1000 / CLOCKS_PER_SEC;
+  printf("Loading and Sorting: %fms\n", time_spent);
 
 
   // Part 1
@@ -103,8 +103,8 @@ main()
   }
 
   clock_t end1 = clock();
-  double time_spent1 = (double)(end1 - start1) / CLOCKS_PER_SEC;
-  printf("Part 1: %i, Time: %f\n", sum, time_spent1);
+  double time_spent1 = (double)(end1 - start1) * 1000 / CLOCKS_PER_SEC;
+  printf("Part 1: %i, Time: %fms\n", sum, time_spent1);
 
 
   // Part 2
@@ -137,9 +137,9 @@ main()
   }
 
   clock_t end2 = clock();
-  double time_spent2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
+  double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
 
-  printf("Part 2: %i, Time: %f\n", sum2, time_spent2);
+  printf("Part 2: %i, Time: %fms\n", sum2, time_spent2);
 
 
 
