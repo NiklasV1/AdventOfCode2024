@@ -80,24 +80,32 @@ readInput()
 int
 main()
 {
+  // Loading and Sorting
   clock_t start = clock();
 
   InputData input = readInput();
-  printf("Hello World!");
   
+  qsort(input.inputs[0], input.length, sizeof(int), comp); 
+  qsort(input.inputs[1], input.length, sizeof(int), comp);
+  
+  clock_t end = clock();
+  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("Loading and Sorting: %f\n", time_spent);
+
+
   // Part 1
   int sum = 0;
-  qsort(input.inputs[0], input.length, sizeof(int), comp); 
-  qsort(input.inputs[1], input.length, sizeof(int), comp); 
+  clock_t start1 = clock();
   for (int i = 0; i < input.length; i++)
   {
     // printf("val1: %i, val2: %i\n", input.inputs[0][i], input.inputs[1][i]);
     sum += difference(input.inputs[0][i], input.inputs[1][i]);
   }
 
-  clock_t end = clock();
-  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-  printf("Part 1: %i, Time: %f\n", sum, time_spent);
+  clock_t end1 = clock();
+  double time_spent1 = (double)(end1 - start1) / CLOCKS_PER_SEC;
+  printf("Part 1: %i, Time: %f\n", sum, time_spent1);
+
 
   // Part 2
   clock_t start2 = clock();
