@@ -44,7 +44,7 @@ readInput()
   int * numbers1 = malloc(sizeof(int) * 1001);
   int * numbers2 = malloc(sizeof(int) * 1001);
 
-  char line[256];
+  char line[32];
   int counter = 0;
   InputData result;
 
@@ -57,13 +57,11 @@ readInput()
     {
       if (line[1] != '\0')
       {
-        int number1;
-        int number2;
+        line[5] = '\0';
+        char * point2 = line + (8 * sizeof(char));
 
-        sscanf(line, "%i   %i", &number1, &number2);
-
-        numbers1[counter] = number1;
-        numbers2[counter] = number2;
+        numbers1[counter] = atoi(line);
+        numbers2[counter] = atoi(point2);
 
         counter++;
       }
