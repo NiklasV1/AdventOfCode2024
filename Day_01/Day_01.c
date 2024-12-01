@@ -1,12 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct
 {
   int length;
   int ** inputs;
 } InputData;
+
+int
+comp(const void * elem1, const void * elem2) 
+{
+    int f = *((int*)elem1);
+    int s = *((int*)elem2);
+    if (f > s) return  1;
+    if (f < s) return -1;
+    return 0;
+}
+
+int
+difference(int a, int b)
+{
+  if (a > b)
+  {
+    return a - b;
+  }
+  else if (a < b)
+  {
+    return b - a;
+  }
+  else
+  {
+    return 0;
+  }
+}
 
 InputData
 readInput()
@@ -27,15 +55,89 @@ readInput()
   {
     while (fgets(line, sizeof(line), inputFile))
     {
-      
+      if (line[1] != '\0')
+      {
+        int number1;
+        int number2;
+
+        sscanf(line, "%i   %i", &number1, &number2);
+
+        numbers1[counter] = number1;
+        numbers2[counter] = number2;
+
+        counter++;
+      }
     }
+    fclose(inputFile);
+    // printf("Total values: %i\n", counter);
   }
+
+  result.length = counter;
+  result.inputs = numbers;
   return result;
 }
 
 int
 main()
 {
+  clock_t start = clock();
+
+  InputData input = readInput();
   printf("Hello World!");
+  
+  // Part 1
+  int sum = 0;
+  qsort(input.inputs[0], input.length, sizeof(int), comp); 
+  qsort(input.inputs[1], input.length, sizeof(int), comp); 
+  for (int i = 0; i < input.length; i++)
+  {
+    // printf("val1: %i, val2: %i\n", input.inputs[0][i], input.inputs[1][i]);
+    sum += difference(input.inputs[0][i], input.inputs[1][i]);
+  }
+
+  clock_t end = clock();
+  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+  printf("Part 1: %i, Time: %f\n", sum, time_spent);
+
+  // Part 2
+  clock_t start2 = clock();
+  int sum2 = 0;
+  int prevNum = 0;
+  int prevCount = 0;
+  for (int i = 0; i < input.length; i++)
+  {
+    int number1 = input.inputs[0][i];
+    if (number1 == prevNum)
+    {
+      sum2 += prevNum * prevCount;
+    }
+    else
+    {
+      int counter = 0;
+      for (int j = 0; j < input.length; j++)
+      {
+        int number2 = input.inputs[1][j];
+        if (number1 == number2)
+        {
+          counter++;
+        }
+      }
+      sum2 += number1 * counter;
+      prevNum = number1;
+      prevCount = counter;
+    }
+  }
+
+  clock_t end2 = clock();
+  double time_spent2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
+
+  printf("Part 2: %i, Time: %f\n", sum2, time_spent2);
+
+
+
+
+  free(input.inputs[0]);
+  free(input.inputs[1]);
+  free(input.inputs);
 }
 
