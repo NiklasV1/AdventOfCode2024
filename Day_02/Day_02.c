@@ -217,15 +217,18 @@ checkLine2(int * in)
         {
             int list1[20];
             int list2[20];
+            int list3[20];
 
             for (int i = 0; i < 20; i++)
             {
               list1[i] = in[i];
               list2[i] = in[i];
+              list3[i] = in[i];
             }
             condenseList(list1, j-1);
             condenseList(list2, j);
-            if (checkLine(list1) == 1 || checkLine(list2) == 1)
+            condenseList(list3, j+1);
+            if (checkLine(list1) == 1 || checkLine(list2) == 1 || checkLine(list3) == 1)
             {
               return 1;
             }
