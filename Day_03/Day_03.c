@@ -6,29 +6,11 @@
 int
 isNumber(char c)
 {
-  switch (c) {
-    case '0':
-      return 0;
-    case '1':
-      return 1;
-    case '2':
-      return 2;
-    case '3':
-      return 3;
-    case '4':
-      return 4;
-    case '5':
-      return 5;
-    case '6':
-      return 6;
-    case '7':
-      return 7;
-    case '8':
-      return 8;
-    case '9':
-      return 9;
+  if (c < 48 || c > 57)
+  {
+      return -1;
   }
-  return -1;
+  return c - 48;
 }
 
 int
@@ -50,12 +32,12 @@ main()
     if (line[1] == '\0') {
       continue;
     }
-    char char1 = line[0];
-    char char2 = line[1];
-    char char3 = line[2];
-    char char4 = line[3];
+    char char1 = 1;
+    char char2 = 1;
+    char char3 = 1;
+    char char4 = line[0];
 
-    for (int i = 4; i < 5000; i++)
+    for (int i = 0; i < 5000; i++)
     {
       // check if end of line
       if (char4 == '\0') {
@@ -76,7 +58,6 @@ main()
 
         if (line[j] == ',') {
           j++;
-          
           while (isNumber(line[j]) != -1) {
             number2 = (number2 * 10) + isNumber(line[j]);
             j++;
@@ -88,10 +69,10 @@ main()
       }
 
       // increment
+      char1 = char2;
+      char2 = char3;
+      char3 = char4;
       char4 = line[i];
-      char3 = line[i - 1];
-      char2 = line[i - 2];
-      char1 = line[i - 3];
       
     }
 
@@ -108,6 +89,83 @@ main()
   // Part 2
   clock_t start2 = clock();
   int sum2 = 0;
+
+  char enabled = 1;
+
+
+  FILE * inputFile2 = fopen("Input.txt", "r");
+  char line2[5000];
+
+  if (inputFile2 == NULL)
+  {
+    exit(1);
+  }
+
+  while (fgets(line2, sizeof(line2), inputFile2)) {
+    if (line2[1] == '\0') {
+      continue;
+    }
+    char char1 = 1;
+    char char2 = 1;
+    char char3 = 1;
+    char char4 = 1;
+    char char5 = 1;
+    char char6 = 1;
+    char char7 = line[0];
+
+    for (int i = 0; i < 5000; i++)
+    {
+      // check if end of line
+      if (char4 == '\0') {
+        break;
+      }
+
+      // check if "mul(" in buffer
+      if (char4 == 'm' && char5 == 'u' && char6 == 'l' && char7 == '(')
+      {
+        int number1 = 0;
+        int number2 = 0;
+
+        int j = i;
+        while (isNumber(line2[j]) != -1) {
+          number1 = (number1 * 10) + isNumber(line2[j]);
+          j++;
+        }
+
+        if (line2[j] == ',') {
+          j++;
+          while (isNumber(line2[j]) != -1) {
+            number2 = (number2 * 10) + isNumber(line2[j]);
+            j++;
+          }
+          if (line2[j] == ')' && number1 > 0 && number2 > 0 && enabled == 1) {
+            sum2 += number1 * number2;
+          }
+        }
+      }
+      else if (char4 == 'd' && char5 == 'o' && char6 == '(' && char7 == ')')
+      {
+        enabled = 1;
+      }
+      else if (char1 == 'd' && char2 == 'o' && char3 == 'n' && char4 == '\'' && char5 == 't' && char6 == '(' && char7 == ')') {
+        enabled = 0;
+      }
+
+      // increment
+      char1 = char2;
+      char2 = char3;
+      char3 = char4;
+      char4 = char5;
+      char5 = char6;
+      char6 = char7;
+      char7 = line2[i];
+      
+    }
+
+
+  }
+  fclose(inputFile);
+
   
   clock_t end2 = clock();
   double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
