@@ -199,20 +199,11 @@ main()
     char * line2 = input2.inputs[i - 1];
     char * line3 = input2.inputs[i];
 
-    for (int j = 2; j < 1001; j++) {
-      if (line1[j] == '\0') {
-        break;
-      }
-
-      if (line2[j-1] != 'A')
+    for (int j = 2; j < strlen(line1); j++) {
+      
+      if (line2[j-1] == 'A' && ((line1[j-2] == 'M' && line3[j] == 'S') || (line1[j-2] == 'S' && line3[j] == 'M')) && ((line1[j] == 'M' && line3[j-2] == 'S') || (line1[j] == 'S' && line3[j-2] == 'M')))
       {
-        continue;
-      }
-
-      if ((line1[j-2] == 'M' && line3[j] == 'S') || (line1[j-2] == 'S' && line3[j] == 'M')) {
-        if ((line1[j] == 'M' && line3[j-2] == 'S') || (line1[j] == 'S' && line3[j-2] == 'M')) {
-          sum2++;
-        }
+        sum2++;
       }
     }
   }
