@@ -13,7 +13,7 @@ InputData
 readInput()
 {
   FILE * inputFile = fopen("Input.txt", "r");
-  char ** lines = malloc(sizeof(char *) * 1001);
+  char ** lines = (char **) malloc(sizeof(char *) * 1001);
 
   char line[1001];
   int counter = 0;
@@ -31,7 +31,7 @@ readInput()
       continue;
     }
 
-    char * line1 = malloc(sizeof(char) * 1001);
+    char * line1 = (char *) malloc(sizeof(char) * 1001);
     strcpy(line1, line);
     lines[counter] = line1;
     counter++;
@@ -193,42 +193,30 @@ main()
   clock_t start2 = clock();
   InputData input2 = readInput();
   int sum2 = 0;
+  int counter = 0;
   
   for (int i = 2; i < input2.length; i++) {
     char * line1 = input2.inputs[i - 2];
     char * line2 = input2.inputs[i - 1];
     char * line3 = input2.inputs[i];
 
-    char buf1 = line1[0];
-    char buf2 = line1[2];
-    char buf3 = line2[1];
-    char buf4 = line3[0];
-    char buf5 = line3[2];
-
     for (int j = 2; j < 1001; j++) {
       if (line1[j] == '\0') {
         break;
       }
 
-      if (buf1 == 'M' && buf2 == 'M' && buf3 == 'A' && buf4 == 'S' && buf5 == 'S') {
+      if (line1[j-2]== 'M' && line1[j] == 'M' && line2[j-1] == 'A' && line3[j-2] == 'S' && line3[j] == 'S') {
         sum2++;
       }
-      else if (buf1 == 'S' && buf2 == 'M' && buf3 == 'A' && buf4 == 'S' && buf5 == 'M') {
+      else if (line1[j-2]== 'S' && line1[j] == 'M' && line2[j-1] == 'A' && line3[j-2] == 'S' && line3[j] == 'M') {
         sum2++;
       }
-      else if (buf1 == 'M' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'S') {
+      else if (line1[j-2]== 'M' && line1[j] == 'S' && line2[j-1] == 'A' && line3[j-2] == 'M' && line3[j] == 'S') {
         sum2++;
       }
-      else if (buf1 == 'S' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'M') {
+      else if (line1[j-2]== 'S' && line1[j] == 'S' && line2[j-1] == 'A' && line3[j-2] == 'M' && line3[j] == 'M') {
         sum2++;
       }
-
-      
-      buf1 = line1[j - 1];
-      buf2 = line1[j + 1];
-      buf3 = line2[j];
-      buf4 = line3[j - 1];
-      buf5 = line3[j + 1];
     }
   }
 
@@ -237,6 +225,7 @@ main()
   double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
   printf("Part 2: %i, Time: %fms\n", sum2, time_spent2);
 
+  printf("Counter: %i\n", counter);
    // Free mallocs
   for (int i = 0; i < input2.length; i++) {
     free(input2.inputs[i]);
