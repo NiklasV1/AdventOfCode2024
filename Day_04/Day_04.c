@@ -193,8 +193,7 @@ main()
   clock_t start2 = clock();
   InputData input2 = readInput();
   int sum2 = 0;
-
-
+  
   for (int i = 2; i < input2.length; i++) {
     char * line1 = input2.inputs[i - 2];
     char * line2 = input2.inputs[i - 1];
@@ -214,13 +213,13 @@ main()
       if (buf1 == 'M' && buf2 == 'M' && buf3 == 'A' && buf4 == 'S' && buf5 == 'S') {
         sum2++;
       }
-      if (buf1 == 'S' && buf2 == 'M' && buf3 == 'A' && buf4 == 'S' && buf5 == 'M') {
+      else if (buf1 == 'S' && buf2 == 'M' && buf3 == 'A' && buf4 == 'S' && buf5 == 'M') {
         sum2++;
       }
-      if (buf1 == 'M' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'S') {
+      else if (buf1 == 'M' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'S') {
         sum2++;
       }
-      if (buf1 == 'S' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'M') {
+      else if (buf1 == 'S' && buf2 == 'S' && buf3 == 'A' && buf4 == 'M' && buf5 == 'M') {
         sum2++;
       }
 
@@ -233,14 +232,16 @@ main()
     }
   }
 
-  // Free mallocs
+ 
+  clock_t end2 = clock();
+  double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
+  printf("Part 2: %i, Time: %fms\n", sum2, time_spent2);
+
+   // Free mallocs
   for (int i = 0; i < input2.length; i++) {
     free(input2.inputs[i]);
   }
   free(input2.inputs);
 
-  clock_t end2 = clock();
-  double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
-  printf("Part 2: %i, Time: %fms\n", sum2, time_spent2);
 
 }
