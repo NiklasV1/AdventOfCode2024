@@ -195,6 +195,58 @@ checkValidOrder(PrintOrder * pOrder, PageNode * pageNodes)
   return 0;
 }
 
+char
+isFollowingNode(PageNode node, PageNode potentialFollower)
+{
+  for (int i = 0; i < 100; i++) {
+    if (node.followingPages[i] == potentialFollower.pageNumber) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int
+comparePages(const void * pPageA, const void * pPageB)
+{
+  PageNode pageA = *(PageNode*) pPageA;
+  PageNode pageB = *(PageNode*) pPageB;
+
+  if (isFollowingNode(pageA, pageB)) {
+    return 1;
+  }
+  else if (isFollowingNode(pageB, pageA)) {
+    return -1;
+  }
+  else {
+    return 0;
+  }
+
+  
+}
+
+int
+correctOrder(PrintOrder * pOrder, PageNode * pageNodes)
+{
+  PrintOrder order = *pOrder;
+
+  int counter = 0;
+
+  PageNode nodes[100];
+
+  for (int i = 0; i < 100; i++) {
+    if (order.pages[i] == 0) {
+      break;
+    }
+    nodes[i] = pageNodes[order.pages[i]];
+    counter++;
+  }
+
+  qsort(nodes, counter, sizeof(PageNode), comparePages);
+
+  return nodes[counter / 2].pageNumber;
+}
+
 int 
 main()
 {
@@ -206,13 +258,13 @@ main()
   PageNode * pageNodes = input.pageNodes;
   PrintOrder * printOrders = input.printOrders;
 
-  // Calculations
   for (int i = 0; i < 500; i++)
   {
     resetPageNodes(pageNodes);
     PrintOrder order = printOrders[i];
 
-    if (order.middleNumber == 0) {
+    if (order.middleNumber == 0)
+    {
       break;
     }
 
@@ -224,4 +276,35 @@ main()
 
   printf("Part 1: %i, Time: %f\n", sum, time_spent1);
 
+  // Part 2
+  clock_t start2 = clock();
+
+  int sum2 = 0;
+  InputData input2 = readInput();
+  PageNode * pageNodes2 = input.pageNodes;
+  PrintOrder * printOrders2 = input.printOrders;
+
+
+
+  for (int i = 0; i < 500; i++) {
+    resetPageNodes(pageNodes2);
+    PrintOrder order = printOrders2[i];
+
+    if (order.middleNumber == 0)
+    {
+      break;
+    }
+
+    if (checkValidOrder(&order, pageNodes2) != 0)
+    {
+      continue;
+    }
+
+    sum2 += correctOrder(&order, pageNodes2);
+  }
+
+  clock_t end2 = clock();
+  double time_spent2 = (double)(end2 - start2) * 1000 / CLOCKS_PER_SEC;
+
+  printf("Part 2: %i, Time: %f\n", sum2, time_spent2);
 }
